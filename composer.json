@@ -1,0 +1,28 @@
+{
+  "name": "sonidelav/preloader-php",
+  "description": "Preloader PHP Framework",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Valentinos Galanos",
+      "email": "sonidelav@hotmail.com"
+    }
+  ],
+  "require": {
+    "classpreloader/classpreloader": "^4.0",
+    "classpreloader/console": "^3.0",
+    "symfony/console": "4.0",
+    "catfan/medoo": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Builder\\": "build",
+      "Framework\\": "src/framework",
+      "App\\": "src/app"
+    }
+  },
+  "scripts": {
+    "console": "php console"
+  }
+}
