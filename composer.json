@@ -13,7 +13,8 @@
     "classpreloader/classpreloader": "^4.0",
     "classpreloader/console": "^3.0",
     "symfony/console": "4.0",
-    "catfan/medoo": "dev-master"
+    "catfan/medoo": "dev-master",
+    "symfony/process": "4.0"
   },
   "autoload": {
     "psr-4": {
