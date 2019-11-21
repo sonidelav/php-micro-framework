@@ -3,6 +3,7 @@
 namespace App\Base;
 
 use App\Controllers\FrontController;
+use App\IMNOSLib\Helpers\MarketsList;
 use App\IMNOSLib\Helpers\TagValues;
 use Framework\Application;
 use Framework\DatabaseConnection;
@@ -20,7 +21,8 @@ class MicroApplication extends Application
             'session.name' => 'microsession',
             'charset'      => 'UTF-8',
             'helpers'      => [
-                'TagValues' => new TagValues($this)
+                'TagValues'   => new TagValues($this),
+                'MarketsList' => new MarketsList($this),
             ]
 
             //'autoload'     => new \ArrayObject([]),
@@ -59,5 +61,13 @@ class MicroApplication extends Application
     public function tagValues()
     {
         return $this->helper('TagValues');
+    }
+
+    /**
+     * @return MarketsList
+     */
+    public function marketsList()
+    {
+        return $this->helper('MarketList');
     }
 }
