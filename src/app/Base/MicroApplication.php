@@ -3,6 +3,7 @@
 namespace App\Base;
 
 use App\Controllers\FrontController;
+use App\IMNOSLib\Helpers\TagValues;
 use Framework\Application;
 use Framework\DatabaseConnection;
 
@@ -18,6 +19,9 @@ class MicroApplication extends Application
             'app.name'     => 'Micro Application',
             'session.name' => 'microsession',
             'charset'      => 'UTF-8',
+            'helpers'      => [
+                'TagValues' => new TagValues($this)
+            ]
 
             //'autoload'     => new \ArrayObject([]),
             //'sec-key'      => 'xxxxx-SiteSecKeyPleaseChangeMe-xxxxx',
@@ -38,7 +42,6 @@ class MicroApplication extends Application
         }
 
         $front = new FrontController($this);
-
         $this->bind('/', [ $front, 'index' ]);
     }
 
@@ -48,5 +51,13 @@ class MicroApplication extends Application
     public function getDb()
     {
         return $this->db ? $this->db->getDb() : null;
+    }
+
+    /**
+     * @return TagValues
+     */
+    public function tagValues()
+    {
+        return $this->helper('TagValues');
     }
 }

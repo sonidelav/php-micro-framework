@@ -230,7 +230,7 @@ class Application implements \ArrayAccess
         self::$apps[$this['app.name']] = $this;
         
         // default helpers
-        $this->helpers = new \ArrayObject(array_merge(['session' => 'Lime\\Session', 'cache' => 'Lime\\Cache'], $this->registry["helpers"]));
+        $this->helpers = new \ArrayObject(array_merge(['session' => 'Framework\\Session', 'cache' => 'Framework\\Cache'], $this->registry["helpers"]));
         
         // register simple autoloader
         spl_autoload_register(function ($class) use ($self) {
@@ -276,7 +276,6 @@ class Application implements \ArrayAccess
      */
     public function service($name, $callable)
     {
-        
         $this->registry[$name] = function ($c) use ($callable) {
             static $object;
             
@@ -784,15 +783,7 @@ class Application implements \ArrayAccess
      */
     public function param($index = null, $default = null, $source = null)
     {
-        $REQUEST = $_REQUEST;
-        
-        // Merge JSON Content with REQUEST
-        if (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
-            $json    = json_decode(file_get_contents('php://input'), true);
-            $REQUEST = array_merge($REQUEST, $json);
-        }
-        
-        $src  = $source ? $source : $REQUEST;
+        $src  = $source ? $source : $_REQUEST;
         $cast = null;
         
         if (strpos($index, ':') !== false) {

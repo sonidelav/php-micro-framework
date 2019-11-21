@@ -2,21 +2,19 @@
 
 namespace App\Controllers;
 
-use App\Base\MicroApplication;
+use App\Base\MicroController;
 
-class FrontController
+class FrontController extends MicroController
 {
-    /** @var MicroApplication */
-    protected $app;
-    
-    public function __construct($app)
-    {
-        $this->app = $app;
-    }
-    
     public function index()
     {
-        $params = $this->app->param();
-        return $params;
+        if( $this->app->tagValues()->isExist() )
+        {
+            // Run Process
+        }
+        else
+        {
+            // Output User Controls
+        }
     }
 }
