@@ -1,6 +1,6 @@
 {
-  "name": "sonidelav/preloader-php",
-  "description": "Preloader PHP Framework",
+  "name": "sonidelav/php-micro-framework",
+  "description": "Micro PHP Framework that compiled into a single PHP file",
   "minimum-stability": "dev",
   "license": "proprietary",
   "authors": [
