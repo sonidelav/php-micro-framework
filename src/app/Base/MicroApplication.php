@@ -10,7 +10,7 @@ class MicroApplication extends Application
 {
     /** @var DatabaseConnection|null */
     private $db = null;
-    
+
     public function __construct($settings = [])
     {
         parent::__construct(array_merge([
@@ -18,7 +18,7 @@ class MicroApplication extends Application
             'app.name'     => 'Micro Application',
             'session.name' => 'microsession',
             'charset'      => 'UTF-8',
-            
+
             //'autoload'     => new \ArrayObject([]),
             //'sec-key'      => 'xxxxx-SiteSecKeyPleaseChangeMe-xxxxx',
             //'route'        => $_SERVER['PATH_INFO'] ?? '/',
@@ -30,21 +30,18 @@ class MicroApplication extends Application
             //'docs_root'    => null,
             //'site_url'     => null
         ], $settings));
-        
-        // Database
-        $this->db = new DatabaseConnection([
-            'database_type' => 'mysql',
-            'database_name' => 'nerp_database',
-            'server'        => '127.0.0.1',
-            'username'      => 'root',
-            'password'      => ''
-        ]);
-        
+
+        if (in_array('database', array_keys($settings)))
+        {
+            // Database
+            $this->db = new DatabaseConnection($settings[ 'database' ]);
+        }
+
         $front = new FrontController($this);
-        
-        $this->bind('/', [$front, 'index']);
+
+        $this->bind('/', [ $front, 'index' ]);
     }
-    
+
     /**
      * @return \Medoo\Medoo|null
      */
