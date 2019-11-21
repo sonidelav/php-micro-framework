@@ -13,12 +13,8 @@ class MicroConfigObject
     public function setAttributes($array)
     {
         foreach($array as $key => $value)
-        {
-            if( isset($this->$key) )
-            {
-                $this->$key = $value;
-            }
-        }
+            $this->$key = $value;
+
         return $this;
     }
 }
