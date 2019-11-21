@@ -2,7 +2,7 @@
 
 namespace App\IMNOSLib\Helpers;
 
-use Framework\Helper;
+use Lime\Helper;
 
 class TagValues extends Helper
 {

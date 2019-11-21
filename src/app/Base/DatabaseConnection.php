@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework;
+namespace App\Base;
 
 use Medoo\Medoo;
 

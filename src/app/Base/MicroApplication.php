@@ -2,13 +2,13 @@
 
 namespace App\Base;
 
+use Lime\App as LimeApplication;
+
 use App\Controllers\FrontController;
 use App\IMNOSLib\Helpers\MarketsList;
 use App\IMNOSLib\Helpers\TagValues;
-use Framework\Application;
-use Framework\DatabaseConnection;
 
-class MicroApplication extends Application
+class MicroApplication extends LimeApplication
 {
     /** @var DatabaseConnection|null */
     private $db = null;

@@ -1,7 +1,7 @@
 <?php
 namespace App\IMNOSLib\Helpers;
 
-use Framework\Helper;
+use Lime\Helper;
 
 class MarketsList extends Helper
 {

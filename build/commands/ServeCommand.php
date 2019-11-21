@@ -15,13 +15,13 @@ class ServeCommand extends Command
     protected function configure()
     {
         $this->setName('app:serve')
-            ->addOption('mode', 'm', InputOption::VALUE_OPTIONAL, 'Serve Development or Production [dev, prod]', 'dev')
-            ->setDescription('Serve Application for Development');
+            ->addOption('prod', null, InputOption::VALUE_NONE, 'Serve Production (dist)')
+            ->setDescription('Serve Application with build in server');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $mode         = $input->getOption('mode');
+        $mode         = $input->getOption('prod') ? 'prod' : 'dev';
         $logger       = new ConsoleLogger($output);
         $rootFolder   = $mode == 'dev' ? __DIR__ . '/../../src/public' : __DIR__ . '/../../dist';
         $serveProcess = new Process([ 'php', '-S', 'localhost:8000', '-t', $rootFolder, ]);
