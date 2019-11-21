@@ -29,6 +29,7 @@ class FrontController extends MicroController
         $reportItems  = new Collection();
 
         $userControls->addItem(
+            // Multiselect Control
             new MultiselectControl([
                 'ctrlKey'       => 'market_list',
                 'emptyText'     => 'Select Markets',
@@ -46,6 +47,7 @@ class FrontController extends MicroController
         );
 
         $reportItems->addItem(
+            // HTML Report Item
             new HTMLReportItem([
                 'title'     => 'HTML MODULE',
                 'width'     => 1000,
