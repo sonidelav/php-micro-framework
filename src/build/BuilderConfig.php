@@ -2,22 +2,20 @@
 
 namespace Builder;
 
-require_once __DIR__ . '/../../vendor/classpreloader/classpreloader/src/ClassLoader.php';
-
-use ClassPreloader\ClassLoader;
-
 class BuilderConfig
 {
     private $vendorAutoloaderPath;
     private $bootstrapPath;
 
-    /** @var ClassLoader */
+    /** @var BuilderLoader */
     private $loader;
+
+    private $includedFiles = [];
 
     public function __construct()
     {
-        $this->vendorAutoloaderPath = __DIR__.'/../../vendor/autoload.php';
-        $this->loader = new ClassLoader();
+        $this->vendorAutoloaderPath = __DIR__ . '/../../vendor/autoload.php';
+        $this->loader               = new BuilderLoader();
     }
 
     public function setBootstrap($path)
@@ -27,14 +25,30 @@ class BuilderConfig
 
     public function compile()
     {
-        require_once($this->vendorAutoloaderPath);
+        require_once( $this->vendorAutoloaderPath );
         $this->loader->register();
-        require_once($this->bootstrapPath);
+
+        $beforeIncluded = get_included_files();
+        require_once( $this->bootstrapPath );
+        $afterIncluded = get_included_files();
+
         $this->loader->unregister();
+
+        foreach ($afterIncluded as $key => $filepath)
+        {
+            if (in_array($filepath, $beforeIncluded))
+                unset($afterIncluded[ $key ]);
+        }
+
+        $this->includedFiles = $afterIncluded;
     }
 
     public function getConfig()
     {
-        return implode(',', $this->loader->getFilenames());
+        $classFiles = $this->loader->getFilenames();
+        $files      = array_merge($classFiles, $this->includedFiles);
+        $files      = array_unique($files);
+
+        return implode(',', $files);
     }
 }

@@ -55,11 +55,11 @@ class CompileCommand extends Command
         $executableContents = file_get_contents($bootstrapFilepath);
 
         // Remove PHP Tags
-        $preloadContents    = str_replace([ '<?php', '?>' ], '', $preloadContents);
-        $executableContents = str_replace([ '<?php', '?>' ], '', $executableContents);
+        /* $preloadContents    = str_replace([ '<?php', '?>' ], '', $preloadContents); */
+        /* $executableContents = str_replace([ '<?php', '?>' ], '', $executableContents); */
 
         // Combine into one
-        $appContents = '<?php ' . "\n/* THIS CODE IS AUTO GENERATED */\n" . $preloadContents . $executableContents;
+        $appContents = '<?php ' . "\n/* THIS CODE IS AUTO GENERATED */\n ?>" . $preloadContents . '?>' . $executableContents . '?>';
         file_put_contents($outputDirectoryPath . '/' . $outputFilename, $appContents);
 
         // Done

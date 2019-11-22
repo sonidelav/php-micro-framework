@@ -2,6 +2,8 @@
 
 namespace ImnosReports\GeneralDegradation\Service;
 
+require_once __DIR__.'/../tableView.php';
+
 use ImnosReports\GeneralDegradation\Classes\Application;
 
 class ReportService
@@ -194,5 +196,7 @@ class ReportService
             $data     = $this->kpiService->getDataFromAPI($initialDate, $market);
             $tables[] = $this->generateTableForMarket($market, $data, $initialDate, $behavior);
         }
+
+        return renderTable(null);
     }
 }
