@@ -2,8 +2,16 @@
 
 namespace ImnosReports\GeneralDegradation\Service;
 
+use ImnosReports\GeneralDegradation\Classes\Application;
+
 class ReportService
 {
+    /** @var Application */
+    private $app;
+
+    /** @var KPIDrService */
+    private $kpiService;
+
     private $columns = [
         "traffic"     => "Traffic(Erl)",
         "traffic_avg" => "Traffic Degradation(%)",
@@ -12,6 +20,12 @@ class ReportService
         "dcr"         => "Volte DCR (GCR)(%)",
         "dcr_avg"     => "Volte DCR Degradation(GCR)(%)",
     ];
+
+    public function __construct(Application $app)
+    {
+        $this->app        = $app;
+        $this->kpiService = new KPIDrService($app);
+    }
 
     protected function show($data)
     {
@@ -133,18 +147,52 @@ class ReportService
         }
     }
 
-    protected function getHTMLStyle()
+    /**
+     * @param $market
+     * @param $data
+     * @param $initDate
+     * @param $behavior
+     * @return mixed
+     */
+    protected function generateTableForMarket($market, $data, $initDate, $behavior)
     {
-        
+        $dates = [];
+        for ($i = 0; $i < 4; $i++)
+        {
+            $dates[] = date("Y-m-d", strtotime($initDate . " -$i days"));
+        }
+
+        $sites = [];
+        foreach ($data->sites as $key => $val)
+        {
+            $sites[ $val->site_id ] = $val;
+        }
+
+        $htmlData = [];
+        foreach($data->data as $data)
+        {
+            $site_with_tech         = $this->app->techHelper()->convertSiteId($data->site, $data->technology);
+
+            $data->latest_unlock 	= $sites[$site_with_tech] ? $sites[$site_with_tech]->latest_unlock : null;
+            $data->latest_check_out = $sites[$site_with_tech] ? $sites[$site_with_tech]->latest_check_out : null;
+            $htmlData[$data->site.$data->sector]["site"] 				= $data->site;
+            $htmlData[$data->site.$data->sector]["sector"] 				= $data->sector;
+            $htmlData[$data->site.$data->sector]["activity_type"] 		= $sites[$site_with_tech] ? $sites[$site_with_tech]->type : "N/A";
+            $htmlData[$data->site.$data->sector]["sub_activity_type"] 	= $sites[$site_with_tech] ? $sites[$site_with_tech]->sub_activity_type : "N/A";
+            $htmlData[$data->site.$data->sector]["technology"] 			= $data->technology;
+            $htmlData[$data->site.$data->sector]["dates"][$data->date] 	= $data;
+        }
+
+        // TODO: add feature into compiler to embeds require php view files
     }
 
-    protected function generateTableForMarket($market)
+    public function generateReports($marketList, $initialDate, $behavior)
     {
-
-    }
-
-    public function generateReports()
-    {
-
+        $tables = [];
+        foreach ($marketList as $market)
+        {
+            $data     = $this->kpiService->getDataFromAPI($initialDate, $market);
+            $tables[] = $this->generateTableForMarket($market, $data, $initialDate, $behavior);
+        }
     }
 }

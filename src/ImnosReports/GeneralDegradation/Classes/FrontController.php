@@ -7,16 +7,17 @@ use App\IMNOSLib\UserControls\ComboboxControl;
 use App\IMNOSLib\UserControls\DatefieldControl;
 use App\IMNOSLib\UserControls\MultiselectControl;
 use ImnosReports\GeneralDegradation\Service\KPIDrService;
+use ImnosReports\GeneralDegradation\Service\ReportService;
 
 class FrontController extends MicroController
 {
-    /** @var KPIDrService */
-    private $kpiService;
+    /** @var ReportService */
+    private $reportService;
 
     public function __construct($app)
     {
         parent::__construct($app);
-        $this->kpiService = new KPIDrService($app);
+        $this->reportService = new ReportService($app);
     }
 
     protected function popupResponse()
@@ -29,19 +30,16 @@ class FrontController extends MicroController
     protected function reportResponse()
     {
         // If not valid inputs
-        if (!$this->app->tagValues()->hasProperty('market_list'))
-            return $this->popupResponse();
+//        if (!$this->app->tagValues()->hasProperty('market_list'))
+//            return $this->popupResponse();
 
         // Get Inputs From TagValues
         $behavior    = $this->app->tagValues()->getProperty('behavior', 0);
         $initialDate = $this->app->tagValues()->getProperty('initial_date', date('Y-m-d'));
         $marketList  = $this->app->tagValues()->getProperty('market_list', []);
 
-        // Generate HTML Report for inputs
-
-
         // Return HTML Report
-
+        return $this->reportService->generateReports($marketList, $initialDate, $behavior);
     }
 
     #region USER CONTROLS

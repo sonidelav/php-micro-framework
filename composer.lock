@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0b5cbb85c9aab193ff50749bda5474f",
+    "content-hash": "329dbc212713cc11d87289e81643e820",
     "packages": [
         {
             "name": "appstract/lush-http",
@@ -1147,6 +1147,8 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-json": "*"
+    },
     "platform-dev": []
 }
