@@ -6,8 +6,8 @@ namespace {
 
     $app = new MicroApplication([
         'debug'        => true,
-        'app.name'     => 'IMNOS Reports - General Degradation',
-        'session.name' => 'imnosttsgd',
+        'app.name'     => 'Base Application',
+        'session.name' => 'application_session',
         'charset'      => 'UTF-8',
 
 //        'database' => [

@@ -4,7 +4,6 @@ namespace App\Base;
 
 use Lime\App as LimeApplication;
 
-use App\Controllers\FrontController;
 use App\IMNOSLib\Helpers\MarketsList;
 use App\IMNOSLib\Helpers\TagValues;
 
@@ -15,25 +14,20 @@ class MicroApplication extends LimeApplication
 
     public function __construct($settings = [])
     {
-        parent::__construct(array_merge([
-            'debug'        => true,
-            'app.name'     => 'Micro Application',
-            'session.name' => 'microsession',
-            'charset'      => 'UTF-8',
-            'helpers'      => [
+        $settings = array_merge([
+            'debug'           => true,
+            'app.name'        => 'Micro Application',
+            'session.name'    => 'microsession',
+            'charset'         => 'UTF-8',
+            'frontController' => MicroController::class,
+            'helpers'         => [
                 'TagValues'   => new TagValues($this),
                 'MarketsList' => new MarketsList($this),
-
-                // Http Client
-                'HttpClient'  => new HttpClient([
-                    'baseUrl' => 'https://ti-api.azurewebsites.net/',
-                    'headers' => [
-                        'Authorization' => 'YtKwHRH4HLhj9rg6t1sJr2X1ikkyhLBS'
-                    ]
-                ]),
-
+                'HttpClient'  => new HttpClient(),
             ],
-        ], $settings));
+        ], $settings);
+
+        parent::__construct($settings);
 
         if (in_array('database', array_keys($settings)))
         {
@@ -41,8 +35,15 @@ class MicroApplication extends LimeApplication
             $this->db = new DatabaseConnection($settings[ 'database' ]);
         }
 
-        $front = new FrontController($this);
-        $this->bind('/', [ $front, 'index' ]);
+        // Init Front Controller
+        if (!in_array('frontController', array_keys($settings)))
+            throw new \Exception('frontController must be specified');
+
+        // Init Front Controller
+        $className  = $settings[ 'frontController' ];
+        $controller = new $className($this);
+
+        $this->bind('/', [ $controller, 'index' ]);
     }
 
     /**

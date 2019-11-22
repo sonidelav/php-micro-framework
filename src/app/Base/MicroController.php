@@ -11,4 +11,9 @@ class MicroController
     {
         $this->app = $app;
     }
+
+    public function index($params)
+    {
+        return __METHOD__;
+    }
 }
