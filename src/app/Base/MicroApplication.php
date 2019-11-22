@@ -23,7 +23,15 @@ class MicroApplication extends LimeApplication
             'helpers'      => [
                 'TagValues'   => new TagValues($this),
                 'MarketsList' => new MarketsList($this),
-                'HttpClient'  => new HttpClient(),
+
+                // Http Client
+                'HttpClient'  => new HttpClient([
+                    'baseUrl' => 'https://ti-api.azurewebsites.net/',
+                    'headers' => [
+                        'Authorization' => 'YtKwHRH4HLhj9rg6t1sJr2X1ikkyhLBS'
+                    ]
+                ]),
+
             ],
         ], $settings));
 

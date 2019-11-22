@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Base\Collection;
 use App\Base\MicroController;
 use App\IMNOSLib\ReportItems\HTMLReportItem;
 use App\IMNOSLib\UserControls\MultiselectControl;
+use Illuminate\Support\Collection;
 
 class FrontController extends MicroController
 {
@@ -28,8 +28,21 @@ class FrontController extends MicroController
         $userControls = new Collection();
         $reportItems  = new Collection();
 
-        $userControls->addItem(
-            // Multiselect Control
+        $userControls->push(
+            new MultiselectControl([
+                'ctrlKey'       => 'market_list',
+                'emptyText'     => 'Select Markets',
+                'label'         => 'Market List',
+                'displayField'  => 'text',
+                'valueField'    => 'value',
+                'allowBlank'    => false,
+                'defaultValue'  => '',
+                'fields'        => [ 'text', 'value' ],
+                'height'        => 200,
+                'minSelections' => 1,
+                'maxSelections' => 100,
+                'data'          => [],
+            ]),
             new MultiselectControl([
                 'ctrlKey'       => 'market_list',
                 'emptyText'     => 'Select Markets',
@@ -46,8 +59,7 @@ class FrontController extends MicroController
             ])
         );
 
-        $reportItems->addItem(
-            // HTML Report Item
+        $reportItems->push(
             new HTMLReportItem([
                 'title'     => 'HTML MODULE',
                 'width'     => 1000,

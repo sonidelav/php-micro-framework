@@ -15,13 +15,14 @@
     "symfony/console": "4.0",
     "catfan/medoo": "1.7.6",
     "symfony/process": "4.0",
-    "lime/lime": "1.0.0",
     "symfony/debug": "4.0",
-    "guzzlehttp/guzzle": "6.4.1"
+    "appstract/lush-http": "dev-master",
+    "lime/lime": "dev-master",
+    "illuminate/support": "^7.0@dev"
   },
   "autoload": {
     "psr-4": {
-      "Builder\\": "build",
+      "Builder\\": "src/build",
       "App\\": "src/app"
     }
   },

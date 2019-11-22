@@ -22,14 +22,19 @@ class CompileCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $outputPreloadFilepath = __DIR__ . '/../../../dist/preload.php';
+        $outputDirectoryPath   = __DIR__ . '/../../../dist';
+
         $config         = $input->getOption('config');
         $outputFilename = $input->getOption('output');
 
-        $command        = $this->getApplication()->find('preloader:compile');
+        $command = $this->getApplication()->find('preloader:compile');
+
+
         $args           = [
             'command'          => 'preloader:compile',
             '--config'         => $config,
-            '--output'         => __DIR__ . '/../../../dist/preload.php',
+            '--output'         => $outputPreloadFilepath,
             '--fix_dir'        => false,
             '--fix_file'       => false,
             '--strip_comments' => true,
@@ -38,8 +43,8 @@ class CompileCommand extends Command
         $command->run($preloaderInput, $output);
 
         // Get Preload Contents
-        $preloadContents = file_get_contents(__DIR__ . '/../../../dist/preload.php');
-        unlink(__DIR__ . '/../../dist/preload.php');
+        $preloadContents = file_get_contents($outputPreloadFilepath);
+        unlink($outputPreloadFilepath);
 
         // Get Bootstrap Contents
         $executableContents = file_get_contents(__DIR__ . '/../../../src/app/bootstrap.php');
@@ -49,8 +54,8 @@ class CompileCommand extends Command
         $executableContents = str_replace([ '<?php', '?>' ], '', $executableContents);
 
         // Combine into one
-        $appContents = '<?php ' . $preloadContents . $executableContents;
-        file_put_contents(__DIR__ . '/../../../dist/' .$outputFilename, $appContents);
+        $appContents = '<?php '."\n/* THIS CODE IS AUTO GENERATED */\n". $preloadContents . $executableContents;
+        file_put_contents($outputDirectoryPath . '/' . $outputFilename, $appContents);
 
         // Done
         $output->writeln('---');
