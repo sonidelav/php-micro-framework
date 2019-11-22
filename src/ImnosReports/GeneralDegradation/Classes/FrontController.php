@@ -28,13 +28,17 @@ class FrontController extends MicroController
 
     protected function reportResponse()
     {
+        // If not valid inputs
+        if (!$this->app->tagValues()->hasProperty('market_list'))
+            return $this->popupResponse();
+
         // Get Inputs From TagValues
         $behavior    = $this->app->tagValues()->getProperty('behavior', 0);
         $initialDate = $this->app->tagValues()->getProperty('initial_date', date('Y-m-d'));
         $marketList  = $this->app->tagValues()->getProperty('market_list', []);
 
         // Generate HTML Report for inputs
-        
+
 
         // Return HTML Report
 

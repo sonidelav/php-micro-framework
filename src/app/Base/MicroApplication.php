@@ -6,6 +6,7 @@ use Lime\App as LimeApplication;
 
 use App\IMNOSLib\Helpers\MarketsList;
 use App\IMNOSLib\Helpers\TagValues;
+use App\IMNOSLib\Helpers\TechHelper;
 
 class MicroApplication extends LimeApplication
 {
@@ -23,6 +24,7 @@ class MicroApplication extends LimeApplication
             'helpers'         => [
                 'TagValues'   => new TagValues($this),
                 'MarketsList' => new MarketsList($this),
+                'TechHelper'  => new TechHelper($this),
                 'HttpClient'  => new HttpClient(),
             ],
         ], $settings);
@@ -76,5 +78,13 @@ class MicroApplication extends LimeApplication
     public function httpClient()
     {
         return $this->helper('HttpClient');
+    }
+
+    /**
+     * @return TechHelper
+     */
+    public function techHelper()
+    {
+        return $this->helper('TechHelper');
     }
 }
