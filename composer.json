@@ -23,7 +23,8 @@
   "autoload": {
     "psr-4": {
       "Builder\\": "src/build",
-      "App\\": "src/app"
+      "App\\": "src/app",
+      "ImnosReports\\": "src/ImnosReports"
     }
   },
   "scripts": {
