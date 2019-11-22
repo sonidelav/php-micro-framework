@@ -14,7 +14,7 @@ class CompileCommand extends Command
     {
         $this
             ->setName('app:compile')
-            ->addOption('bootstrap', null, InputOption::VALUE_OPTIONAL, 'Bootstrap Filepath', __DIR__ . '/../../src/app/bootstrap.php')
+            ->addOption('bootstrap', null, InputOption::VALUE_OPTIONAL, 'Bootstrap Filepath', __DIR__ . '/../../../src/app/bootstrap.php')
             ->addOption('output', null, InputOption::VALUE_OPTIONAL, 'Output filename', 'app.php')
             ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Config filepath', __DIR__ . '/../config/build-config.php')
             ->setDescription('Compile Application to a Single PHP File');
@@ -29,7 +29,7 @@ class CompileCommand extends Command
         $args           = [
             'command'          => 'preloader:compile',
             '--config'         => $config,
-            '--output'         => __DIR__ . '/../../dist/preload.php',
+            '--output'         => __DIR__ . '/../../../dist/preload.php',
             '--fix_dir'        => false,
             '--fix_file'       => false,
             '--strip_comments' => true,
@@ -38,11 +38,11 @@ class CompileCommand extends Command
         $command->run($preloaderInput, $output);
 
         // Get Preload Contents
-        $preloadContents = file_get_contents(__DIR__ . '/../../dist/preload.php');
+        $preloadContents = file_get_contents(__DIR__ . '/../../../dist/preload.php');
         unlink(__DIR__ . '/../../dist/preload.php');
 
         // Get Bootstrap Contents
-        $executableContents = file_get_contents(__DIR__ . '/../../src/app/bootstrap.php');
+        $executableContents = file_get_contents(__DIR__ . '/../../../src/app/bootstrap.php');
 
         // Remove PHP Tags
         $preloadContents    = str_replace([ '<?php', '?>' ], '', $preloadContents);
@@ -50,7 +50,7 @@ class CompileCommand extends Command
 
         // Combine into one
         $appContents = '<?php ' . $preloadContents . $executableContents;
-        file_put_contents(__DIR__ . '/../../dist/'.$outputFilename, $appContents);
+        file_put_contents(__DIR__ . '/../../../dist/' .$outputFilename, $appContents);
 
         // Done
         $output->writeln('---');

@@ -23,7 +23,7 @@ class ServeCommand extends Command
     {
         $mode         = $input->getOption('prod') ? 'prod' : 'dev';
         $logger       = new ConsoleLogger($output);
-        $rootFolder   = $mode == 'dev' ? __DIR__ . '/../../src/public' : __DIR__ . '/../../dist';
+        $rootFolder   = $mode == 'dev' ? __DIR__ . '/../../../public' : __DIR__ . '/../../../dist';
         $serveProcess = new Process([ 'php', '-S', 'localhost:8000', '-t', $rootFolder, ]);
 
         $serveProcess->setTimeout(0);

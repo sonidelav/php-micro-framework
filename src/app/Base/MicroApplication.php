@@ -23,18 +23,8 @@ class MicroApplication extends LimeApplication
             'helpers'      => [
                 'TagValues'   => new TagValues($this),
                 'MarketsList' => new MarketsList($this),
-            ]
-
-            //'autoload'     => new \ArrayObject([]),
-            //'sec-key'      => 'xxxxx-SiteSecKeyPleaseChangeMe-xxxxx',
-            //'route'        => $_SERVER['PATH_INFO'] ?? '/',
-            //'helpers'      => [],
-            //'base_url'     => $base_url,
-            //'base_route'   => $base_url,
-            //'base_host'    => $_SERVER['SERVER_NAME'] ?? php_uname('n'),
-            //'base_port'    => $_SERVER['SERVER_PORT'] ?? 80,
-            //'docs_root'    => null,
-            //'site_url'     => null
+                'HttpClient'  => new HttpClient(),
+            ],
         ], $settings));
 
         if (in_array('database', array_keys($settings)))
@@ -69,5 +59,13 @@ class MicroApplication extends LimeApplication
     public function marketsList()
     {
         return $this->helper('MarketList');
+    }
+
+    /**
+     * @return HttpClient
+     */
+    public function httpClient()
+    {
+        return $this->helper('HttpClient');
     }
 }
