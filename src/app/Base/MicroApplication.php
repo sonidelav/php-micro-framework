@@ -67,7 +67,7 @@ class MicroApplication extends LimeApplication
      */
     public function marketsList()
     {
-        return $this->helper('MarketList');
+        return $this->helper('MarketsList');
     }
 
     /**

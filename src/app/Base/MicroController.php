@@ -2,7 +2,7 @@
 
 namespace App\Base;
 
-class MicroController
+abstract class MicroController
 {
     /** @var MicroApplication */
     protected $app;
@@ -12,8 +12,14 @@ class MicroController
         $this->app = $app;
     }
 
-    public function index($params)
+    public function index()
     {
-        return __METHOD__;
+        if($this->app->tagValues()->isExist())
+            return $this->reportResponse();
+        else
+            return $this->popupResponse();
     }
+
+    protected abstract function reportResponse();
+    protected abstract function popupResponse();
 }

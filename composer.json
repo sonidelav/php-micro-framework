@@ -18,7 +18,8 @@
     "symfony/debug": "4.0",
     "appstract/lush-http": "dev-master",
     "lime/lime": "dev-master",
-    "illuminate/support": "^7.0@dev"
+    "illuminate/support": "^7.0@dev",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

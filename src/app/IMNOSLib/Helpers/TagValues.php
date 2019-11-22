@@ -4,6 +4,10 @@ namespace App\IMNOSLib\Helpers;
 
 use Lime\Helper;
 
+/**
+ * Class TagValues
+ * @package App\IMNOSLib\Helpers
+ */
 class TagValues extends Helper
 {
     private $data = null;
@@ -13,7 +17,7 @@ class TagValues extends Helper
         $tagValues = $this->app->param('tagvalues');
         if($tagValues)
         {
-            $this->data = $this->app->json()->decode($tagValues, false);
+            $this->data = json_decode($tagValues, false);
         }
     }
 
