@@ -2,6 +2,7 @@
 
 namespace Builder\Commands;
 
+use Builder\BuilderConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,9 +15,8 @@ class CompileCommand extends Command
     {
         $this
             ->setName('app:compile')
-            ->addOption('bootstrap', null, InputOption::VALUE_OPTIONAL, 'Bootstrap Filepath', __DIR__ . '/../../../src/app/bootstrap.php')
+            ->addOption('bootstrap', null, InputOption::VALUE_REQUIRED, 'Bootstrap filepath')
             ->addOption('output', null, InputOption::VALUE_OPTIONAL, 'Output filename', 'app.php')
-            ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Config filepath', __DIR__ . '/../config/build-config.php')
             ->setDescription('Compile Application to a Single PHP File');
     }
 
@@ -25,15 +25,20 @@ class CompileCommand extends Command
         $outputPreloadFilepath = __DIR__ . '/../../../dist/preload.php';
         $outputDirectoryPath   = __DIR__ . '/../../../dist';
 
-        $config         = $input->getOption('config');
-        $outputFilename = $input->getOption('output');
+        $bootstrapFilepath = $input->getOption('bootstrap');
+        $outputFilename    = $input->getOption('output');
 
-        $command = $this->getApplication()->find('preloader:compile');
+        if (!$bootstrapFilepath)
+            throw new \Exception('Bootstrap Missing');
 
+        $builderConfig = new BuilderConfig();
+        $builderConfig->setBootstrap($bootstrapFilepath);
+        $builderConfig->compile();
 
+        $command       = $this->getApplication()->find('preloader:compile');
         $args           = [
             'command'          => 'preloader:compile',
-            '--config'         => $config,
+            '--config'         => $builderConfig->getConfig(),
             '--output'         => $outputPreloadFilepath,
             '--fix_dir'        => false,
             '--fix_file'       => false,
@@ -47,14 +52,14 @@ class CompileCommand extends Command
         unlink($outputPreloadFilepath);
 
         // Get Bootstrap Contents
-        $executableContents = file_get_contents(__DIR__ . '/../../../src/app/bootstrap.php');
+        $executableContents = file_get_contents($bootstrapFilepath);
 
         // Remove PHP Tags
         $preloadContents    = str_replace([ '<?php', '?>' ], '', $preloadContents);
         $executableContents = str_replace([ '<?php', '?>' ], '', $executableContents);
 
         // Combine into one
-        $appContents = '<?php '."\n/* THIS CODE IS AUTO GENERATED */\n". $preloadContents . $executableContents;
+        $appContents = '<?php ' . "\n/* THIS CODE IS AUTO GENERATED */\n" . $preloadContents . $executableContents;
         file_put_contents($outputDirectoryPath . '/' . $outputFilename, $appContents);
 
         // Done
