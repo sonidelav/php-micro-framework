@@ -12,7 +12,7 @@ namespace {
 
         'database' => [
             'database_type' => 'mysql',
-            'database_name' => 'ti_db',
+            'database_name' => 'db',
             'server'        => '127.0.0.1',
             'username'      => 'root',
             'password'      => 'root',
